@@ -26,12 +26,29 @@ public class Main {
 
             //zippedBytes = readWiresharkContent();
 
+            StringBuffer hexString = new StringBuffer();
             byte[] zippedBytesArray = new byte[zippedBytes.size()];
 
             for (int i = 0; i < zippedBytes.size(); i++) {
-                System.out.println(i);
-                zippedBytesArray[i] = zippedBytes.get(i);
+
+                byte zippedByte = zippedBytes.get(i);
+
+                String hexValue = Integer.toHexString(zippedByte);
+
+                if(hexValue.startsWith("ffffff")){
+                    hexValue = hexValue.substring(6);
+                }
+
+                if(hexValue.length() == 1){
+                    hexValue = "0" + hexValue;
+                }
+
+                hexString.append(hexValue).append(":");
+
+                zippedBytesArray[i] = zippedByte;
             }
+
+            System.out.println("Zipped Hex String --> " + hexString);
 
             GzipCompressorInputStream in = new GzipCompressorInputStream(new ByteArrayInputStream(zippedBytesArray));
 
